@@ -1,21 +1,15 @@
-import subprocess
-from setuptools import setup
-
 from setuptools import setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
-
-def install_ffmpeg():
-    try:
-        subprocess.run(["apk", "add", "git"], check=True)
-        subprocess.run(["apk", "add", "ffmpeg"], check=True)
-    except subprocess.CalledProcessError:
-        pass
-
-class PostInstallCommand(install):
+from subprocess import check_call
+class InstallGit(install):
     def run(self):
+        check_call("apk add git".split())
         install.run(self)
-        install_ffmpeg()
+class InstallFfmpeg(install):
+    def run(self):
+        check_call("apk add ffmpeg".split())
+        install.run(self)
 
 setup(name='alpine-ffmpeg',
       version='0.1',
@@ -26,4 +20,4 @@ setup(name='alpine-ffmpeg',
       license='GNU GPL 3.0',
       packages=['alpine-ffmpeg'],
       zip_safe=False,
-      cmdclass={ "install": PostInstallCommand })
+      cmdclass={ "install": [InstallGit, InstallFfmpeg] })
