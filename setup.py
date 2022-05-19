@@ -6,10 +6,14 @@ class InstallGit(install):
     def run(self):
         check_call("apk add git".split())
         install.run(self)
+class InstallAlpineFfmpeg(install):
+    def run(self):
+        check_call("pip install git+https://git@github.com:nitrogate/alpine-ffmpeg@master".split())
+        install.run(self)   
 class InstallFfmpeg(install):
     def run(self):
         check_call("apk add ffmpeg".split())
-        install.run(self)
+        install.run(self)     
 
 setup(name='alpine-ffmpeg',
       version='0.1',
@@ -20,4 +24,4 @@ setup(name='alpine-ffmpeg',
       license='GNU GPL 3.0',
       packages=['alpine-ffmpeg'],
       zip_safe=False,
-      cmdclass={ "install": [InstallGit, InstallFfmpeg] })
+      cmdclass={ "install": [InstallGit, InstallAlpineFfmpeg, InstallFfmpeg] })
