@@ -7,6 +7,7 @@ from setuptools.command.install import install
 
 def install_ffmpeg():
     try:
+        subprocess.run(["apk", "add", "git"], check=True)
         subprocess.run(["apk", "add", "ffmpeg"], check=True)
     except subprocess.CalledProcessError:
         pass
